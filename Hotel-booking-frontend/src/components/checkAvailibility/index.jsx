@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.scss";
 import Calendar from "react-calendar";
 import { CgCalendarDates } from "react-icons/cg";
@@ -6,15 +6,42 @@ import { Link } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
 
 const CheckAvailibility = () => {
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
   const [roomNo, setRoomNo] = useState(1);
-  const [adultNo, setAdultNo] = useState(0);
+  const [adultNo, setAdultNo] = useState(1);
   const [visibleCalendar, setVisibleCalendar] = useState(false);
-  const [date, setDate] = useState(null);
 
-  const onSubmitCheck = () => {};
+  const calendarRef = useRef(null);
+
+  const onSubmitCheck = (e) => {
+    e.preventDefault();
+
+    const formData = {
+      location,
+      date,
+      roomNo,
+      adultNo,
+    };
+
+    console.log("formData-->", formData);
+    alert(JSON.stringify(formData));
+  };
 
   const toggleCalendar = () => {
     setVisibleCalendar((v) => !v);
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleWindowClick);
+
+    return () => window.removeEventListener("click", handleWindowClick);
+  }, []);
+
+  const handleWindowClick = (e) => {
+    if (calendarRef.current && !calendarRef.current.contains(e.target)) {
+      setVisibleCalendar(false);
+    }
   };
 
   return (
@@ -25,33 +52,42 @@ const CheckAvailibility = () => {
       </section>
 
       <form onSubmit={onSubmitCheck} className="CA-form mx-auto shadow">
-        <div className="row px-2 py-4 CAFormElements justify-content-center">
+        <div className="row px-0 py-4 CAFormElements justify-content-center px-2">
           {/* Where to? */}
-          <div className="col-3 d-flex align-items-center ps-0">
+          <div className="col-12 col-md-6 col-lg-3 d-flex align-items-center px-2">
             <input
               type="text"
               className="form-control"
               placeholder="Where are you going?"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
             />
           </div>
           {/* Where to? */}
 
           {/* checkin & checkout  */}
-          <div className="checkinCheckOutWrapper col-4 row px-4">
-            <input
-              className="form-control"
-              type="text"
-              readOnly
-              value={
-                date && date?.length > 0 &&
-                date[0]?.toDateString() + " - " + date[1]?.toDateString()
-              }
-              onClick={toggleCalendar}
-              placeholder="Check-in Date - Check-out Date"
-            />
-            {/* <CgCalendarDates className="calendar-icon" size={30}/> */}
+          <div
+            className="checkinCheckOutWrapper col-12 col-md-6 col-lg-4 row mx-0 px-2 py-4 py-md-0"
+            ref={calendarRef}
+          >
+            <div className="input-group px-0" onClick={toggleCalendar}>
+              <input
+                className="form-control"
+                type="text"
+                readOnly
+                value={
+                  date &&
+                  date?.length > 0 &&
+                  date[0]?.toDateString() + " - " + date[1]?.toDateString()
+                }
+                placeholder="Check-in Date - Check-out Date"
+              />
+              <span className="input-group-text" id="basic-addon1">
+                <CgCalendarDates size={20} />
+              </span>
+            </div>
             {visibleCalendar && (
-              <div className="calendar-container">
+              <div className="calendar-container ">
                 <Calendar
                   onChange={setDate}
                   value={date || new Date()}
@@ -64,10 +100,10 @@ const CheckAvailibility = () => {
           {/* checkin & checkout  */}
 
           {/* Room, adult  */}
-          <div className="checkAvailibilityDetails col-4 row">
+          <div className="col-12 col-lg-4 row checkAvailibilityDetails mx-0 px-0 py-0 py-md-4 py-lg-0">
             <div
               title="No. of Rooms"
-              className="custom-room-marketing col-6 d-flex align-items-center"
+              className="custom-room-marketing col-6 d-flex align-items-center px-2"
             >
               <select
                 name="Rooms"
@@ -87,7 +123,7 @@ const CheckAvailibility = () => {
 
             <div
               title="No. of Adults"
-              className="custom-adults-marketing col-6 d-flex align-items-center"
+              className="custom-adults-marketing col-6 d-flex align-items-center px-2"
             >
               <select
                 name="Adults"
@@ -107,17 +143,15 @@ const CheckAvailibility = () => {
           {/* Room, adult, child  */}
 
           {/* Search Btn */}
-          <div className="searchBtn col-1 d-flex align-items-center">
-            <Link>
-              <button
-                className="book-a-room btn btn-secondary"
-                type="button"
-                id="book-a-room"
-                title="Search"
-              >
-                SEARCH
-              </button>
-            </Link>
+          <div className="col-12 col-lg-1 searchBtn d-flex align-items-center justify-content-center px-2 pt-4 pt-md-0">
+            <button
+              className="book-a-room btn btn-secondary w-100"
+              type="submit"
+              id="book-a-room"
+              title="Search"
+            >
+              SEARCH
+            </button>
           </div>
           {/* Search Btn */}
         </div>

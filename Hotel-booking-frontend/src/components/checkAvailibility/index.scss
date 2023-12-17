@@ -1,5 +1,5 @@
 .checkAvailibility {
-  background-color: #DBCC95;
+  background-color: #dbcc95;
   color: #fff;
   .CA-heading {
     width: 90%;
@@ -7,7 +7,7 @@
   .CA-form {
     width: 90%;
     .CAFormElements {
-      background: #CD8D7A;
+      background: #cd8d7a;
       .checkinCheckOutWrapper {
         position: relative;
         .calendar-icon {
@@ -18,7 +18,8 @@
         .calendar-container {
           position: absolute;
           top: 40px;
-          left: 20px;
+          left: 0px;
+          z-index: 100;
         }
       }
       .checkAvailibilityDetails {
@@ -31,11 +32,10 @@
 }
 
 .react-calendar {
-  width: 400px;
   max-width: 100%;
   background-color: #fff;
   color: #222;
-  border-radius: 8px;
+  border-radius: 8px !important;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.125em;
@@ -57,17 +57,15 @@
 abbr[title] {
   text-decoration: none;
 }
-/* .react-calendar__month-view__days__day--weekend {
-  color: #d10000;
- } */
+
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
   background: #f8f8fa !important;
   color: #6f48eb !important;
-  // border-radius: 6px;
+  border-radius: 6px;
 }
 .react-calendar__tile--now {
-  // border-radius: 6px;
+  border-radius: 6px;
   font-weight: bold;
   // background: #6f48eb;
   // color: white;
@@ -75,7 +73,7 @@ abbr[title] {
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
   // background: #6f48eb33;
-  // border-radius: 6px;
+  border-radius: 6px;
   font-weight: bold;
   // color: #6f48eb;
 }
@@ -85,7 +83,7 @@ abbr[title] {
 }
 .react-calendar__tile--active {
   background: #6f48eb !important;
-  // border-radius: 6px;
+  border-radius: 6px;
   font-weight: bold;
   color: white;
 }
