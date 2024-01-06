@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hotelBooking.entity.Hotel;
@@ -53,6 +54,7 @@ class HotelBookingController {
 	}
 	@PostMapping("/create/room")
 	public ResponseEntity<Map<String,Object>> saveHotelRoom(@RequestBody HotelRoom room){
+	
 		return new ResponseEntity<Map<String,Object>>(roomService.saveHotelRoom(room),HttpStatus.OK);
 	}
 	
@@ -77,11 +79,18 @@ class HotelBookingController {
 	}
 	
 	@PutMapping("/addRoomTohotel/{roomid}/{hotelId}")
-	public ResponseEntity<Hotel> addRoomToHotel(@PathVariable Long roomid,@PathVariable Long hotelId)
+	public ResponseEntity<String> addRoomToHotel(@PathVariable Long roomid,@PathVariable Long hotelId)
 	{
-		return new ResponseEntity<Hotel>(hotelservice.addRoomToHotel(roomid, hotelId),HttpStatus.OK);
+		return new ResponseEntity<String>(hotelservice.addRoomToHotel(roomid, hotelId),HttpStatus.OK);
 	}
 	
+	@GetMapping("/search")
+	public ResponseEntity<List<Hotel>> searchHotels(@RequestParam("adultNo") int no_of_pepole,@RequestParam("checkIn") String booking_start_date,
+			@RequestParam("checkOut") String booking_end_date,@RequestParam("location")String hotel_city,@RequestParam("roomNo") int total_rooms )
+	{
+		
+		return new ResponseEntity<List<Hotel>>(new ArrayList<>(),HttpStatus.OK);
+	}
 	
 	
 }

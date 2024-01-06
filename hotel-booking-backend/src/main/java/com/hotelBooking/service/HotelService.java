@@ -11,6 +11,7 @@ import org.neo4j.driver.Records;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
+import org.neo4j.driver.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hotelBooking.entity.Hotel;
 import com.hotelBooking.entity.HotelRoom;
 import com.hotelBooking.repository.HotelRepository;
@@ -33,6 +36,11 @@ public class HotelService implements HotelRepository{
 	Driver neo4jDriver;
 	
 	Logger logger=LoggerFactory.getLogger(HotelService.class);
+	
+	ObjectMapper mapper = JsonMapper.builder()
+		    .addModule(new JavaTimeModule())
+		    .build();
+
 	
 	@Override
 	public List<Hotel> findAllHotels() {
@@ -67,18 +75,43 @@ public class HotelService implements HotelRepository{
 		// TODO Auto-generated method stub
 		Session session=neo4jDriver.session();
 		Transaction tx=session.beginTransaction();
-		String query="match(n:Hotel)where id(n)="+id+" return n";
-		logger.info("---calling rooms----");
-		List<HotelRoom>listOfRooms=findRoomForHotel(id);
-		logger.info("list of rooms"+listOfRooms);
+//		String query="match(n:Hotel)where id(n)="+id+" return n";
+		String query="MATCH (n:Hotel) where id(n)="+id+" match(m:HotelRoom) match(n)-[r:has_room]->(m) return n,collect(m) as m";
+//		logger.info("---calling rooms----");
+//		List<HotelRoom>listOfRooms=findRoomForHotel(id);
+//		logger.info("list of rooms"+listOfRooms);
 		Result res= tx.run(query);
-		Record rec=res.list().get(0);
-		ObjectMapper mapper=new ObjectMapper();
-		Map<String,Object>resultMap=rec.get("n").asMap();
-		//custom object mapper
-		Hotel hotel=mapper.convertValue( rec.get("n").asMap(),Hotel.class);
+//		Record rec=res.list().get(0);
+		List<Record>records=res.list();
+		Record hotelRecord=records.get(0);
+		Hotel hotel=mapper.convertValue(hotelRecord.get("n").asMap(),Hotel.class);
 		hotel.setHotel_id(id);
+		logger.info("hotel details "+hotel);
+		
+		int sizeOfRooms=records.get(0).get("m").size();
+		Value roomRecord=records.get(0).get("m");
+		List<HotelRoom>listOfRooms = new ArrayList<>();
+		for(int i=0;i<sizeOfRooms;i++) {
+			
+			logger.info("node value "+roomRecord.get(i).asNode().asMap());
+			Map<String,Object>resultMap=roomRecord.get(i).asNode().asMap();
+			HotelRoom hotel_room=new HotelRoom();
+			hotel_room.setId(roomRecord.get(i).asEntity().id());
+			hotel_room.setBooking_start_date(resultMap.get("booking_start_date").toString());
+			hotel_room.setBooking_end_date(resultMap.get("booking_end_date").toString());
+			hotel_room.setNo_of_pepole(Integer.parseInt(resultMap.get("no_of_pepole").toString()));
+			hotel_room.setPrice(Double.parseDouble(resultMap.get("price").toString()));
+			listOfRooms.add(hotel_room);
+			
+		}
 		hotel.setHotelRooms(listOfRooms);
+//		Hotel hotel=new Hotel();
+//		ObjectMapper mapper=new ObjectMapper();
+//		Map<String,Object>resultMap=rec.get("n").asMap();
+//		//custom object mapper
+//		Hotel hotel=mapper.convertValue( rec.get("n").asMap(),Hotel.class);
+//		hotel.setHotel_id(id);
+//		hotel.setHotelRooms(listOfRooms);
 		tx.commit();
 		session.close();
 		return hotel;
@@ -113,27 +146,28 @@ public class HotelService implements HotelRepository{
 	}
 	
 
-	public Hotel addRoomToHotel(Long roomId,Long hotelId) {
+	public String addRoomToHotel(Long roomId,Long hotelId) {
 		//1.find room and hotel
 		Session session=neo4jDriver.session();
 		Transaction tx=session.beginTransaction();
 		HotelRoom hotelRoom= roomService.findHotelRoomById(roomId);
+		logger.info("room details "+hotelRoom);
 		Hotel hotel=findHotelById(hotelId);
-		String query="match(n:Hotel)where id(n)="+hotelId+" match(m:HotelRoom)where id(m)="+roomId+" create (n)-[r:has_room]->(m) return r";
-		logger.info(query);
+		logger.info("hotel details "+hotel);
+		String query="match(n:Hotel)where id(n)="+hotelId+" match(m:HotelRoom)where id(m)="+roomId+" create (n)-[r:has_room]->(m) return r,m";
+		logger.info("query "+query);
 		Result res=tx.run(query);
-		Record rec=res.list().get(0);
-		logger.info(""+rec.get("r").asMap());
-//		List<HotelRoom>listOfRooms=hotel.getHotelRooms();
-//		if(listOfRooms==null || listOfRooms.isEmpty())
-//		{
-//			listOfRooms=new ArrayList<>();
-//		}
-//		listOfRooms.add(hotelRoom);
-//		hotel.setHotelRooms(listOfRooms);
+		
+		for(Record record:res.list()) {
+			logger.info("relationship record  "+record.get("r").asMap());
+
+			logger.info("room record "+record.get("m").asMap());
+		}
+		
+		
 		tx.commit();
 		session.close();
-		return hotel;
+		return "room added successfully";
 		
 		
 	}
@@ -157,5 +191,12 @@ public class HotelService implements HotelRepository{
 		}
 		return  listOfRooms;
 	}
+	
+//	public List<Hotel> searchHotels(int no_of_pepole,String booking_start_date,String booking_end_date,String hotel_city,int total_rooms ){
+//		logger.info("calling search method"+no_of_pepole+" "+booking_end_date+" "+booking_end_date+" "+hotel_city+" "+total_rooms);
+//		Session session=neo4jDriver.session();
+//		Transaction tx=session.beginTransaction();
+////		String q="match("
+//	}
 
 }
