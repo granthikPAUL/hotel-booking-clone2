@@ -1,0 +1,22 @@
+.HotelCard {
+  cursor: pointer;
+  img {
+    height: 40%;
+  }
+  .card-body {
+    p {
+      padding: 0px;
+      margin: 0px;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .discount {
+      background-color: #e61e43;
+      width: fit-content;
+      border-radius: 10px;
+      padding: 5px 10px;
+      color: #ffffff;
+    }
+  }
+}

@@ -1,15 +1,16 @@
 import React from "react";
 import "./index.scss";
-import { PiBuildingsFill } from "react-icons/pi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { TbWorld } from "react-icons/tb";
 import { Link } from "react-router-dom";
-
+import Logo from "../../assets/logo/logo.svg"
 const index = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow px-1 px-lg-5 header">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow px-1 px-lg-5">
       <section className="navbar-flex navbar-brand logo d-flex justify-content-center align-items-center">
-        <Link to="/">HotelBooking.com</Link>
+        <Link to="/">
+          <img src={Logo} alt="Hotel.com logo"/>
+        </Link>
       </section>
       <button
         className="navbar-toggler"
@@ -35,16 +36,19 @@ const index = () => {
               <TbWorld /> English
             </div>
           </li>
-          <li className="nav-item me-auto">
+          <li className="nav-item support me-auto">
+            <div className="d-flex align-items-center gap-2">
+              Support
+            </div>
+          </li>
+          <li>
             <Link to="/register">
-              <button className="registerBtn btn btn-outline-primary">
                 Regiser
-              </button>
             </Link>
+          </li>
+          <li>
             <Link to="/login">
-              <button className="loginBtn btn btn-outline-success ms-3">
                 Login
-              </button>
             </Link>
           </li>
         </ul>

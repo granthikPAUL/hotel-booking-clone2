@@ -1,0 +1,19 @@
+.search-by-city {
+  .card {
+    height: 250px !important;
+    border-radius: 30px;
+    img {
+      height: 80%;
+      border-radius: 30px 30px 0 0;
+    }
+  }
+  .slick-slider {
+    .slick-prev,
+    .slick-next {
+      z-index: 100;
+      polygon {
+        fill: #e61e43 !important;
+      }
+    }
+  }
+}

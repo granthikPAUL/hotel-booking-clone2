@@ -6,3 +6,12 @@ Project references.
 <!-- neo4j -->
 https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-neo4j-on-ubuntu-20-04
 
+
+MATCH p=()-[r:has_room]->() RETURN p LIMIT 25
+
+systemctl {start, status, restart, stop} neo4j
+http://localhost:7474/
+
+sprigboot server local 
+http://localhost:8080/
+

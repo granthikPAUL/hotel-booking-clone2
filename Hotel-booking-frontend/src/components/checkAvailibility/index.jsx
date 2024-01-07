@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./index.scss";
 import Calendar from "react-calendar";
 import { CgCalendarDates } from "react-icons/cg";
+import { IoLocationSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
 
@@ -19,7 +20,8 @@ const CheckAvailibility = () => {
 
     const formData = {
       location,
-      date,
+      checkIn: date[0],
+      checkOut: date[1],
       roomNo,
       adultNo,
     };
@@ -45,23 +47,27 @@ const CheckAvailibility = () => {
   };
 
   return (
-    <div className="checkAvailibility">
+    <div className="checkAvailibility py-4">
       <section className="CA-heading mx-auto">
-        <h1>Find your next stay</h1>
-        <h3>Search deals on hotels, homes, and much more...</h3>
+        <h1 className="p-0 m-0">Where to?</h1>
       </section>
 
-      <form onSubmit={onSubmitCheck} className="CA-form mx-auto shadow">
-        <div className="row px-0 py-4 CAFormElements justify-content-center px-2">
+      <form onSubmit={onSubmitCheck} className="CA-form mx-auto">
+        <div className="row CAFormElements justify-content-center p-2">
           {/* Where to? */}
           <div className="col-12 col-md-6 col-lg-3 d-flex align-items-center px-2">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Where are you going?"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
+            <div className="input-group px-0">
+              <span className="input-group-text" id="basic-addon1">
+                <IoLocationSharp size={20} />
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Where are you going?"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </div>
           </div>
           {/* Where to? */}
 
@@ -71,6 +77,9 @@ const CheckAvailibility = () => {
             ref={calendarRef}
           >
             <div className="input-group px-0" onClick={toggleCalendar}>
+              <span className="input-group-text" id="basic-addon1">
+                <CgCalendarDates size={20} />
+              </span>
               <input
                 className="form-control"
                 type="text"
@@ -82,9 +91,6 @@ const CheckAvailibility = () => {
                 }
                 placeholder="Check-in Date - Check-out Date"
               />
-              <span className="input-group-text" id="basic-addon1">
-                <CgCalendarDates size={20} />
-              </span>
             </div>
             {visibleCalendar && (
               <div className="calendar-container ">
@@ -145,7 +151,7 @@ const CheckAvailibility = () => {
           {/* Search Btn */}
           <div className="col-12 col-lg-1 searchBtn d-flex align-items-center justify-content-center px-2 pt-4 pt-md-0">
             <button
-              className="book-a-room btn btn-secondary w-100"
+              className="book-a-room btn btn-primary"
               type="submit"
               id="book-a-room"
               title="Search"

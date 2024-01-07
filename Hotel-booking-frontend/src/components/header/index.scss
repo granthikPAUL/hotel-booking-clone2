@@ -1,9 +1,38 @@
-.header {
+.navbar {
+  position: sticky !important;
+  top: 0px;
+  z-index: 10000;
+  font-size: 15px;
+  li {
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #e61e43 !important;
+    &:hover{
+      color: #000000 !important;
+    }
+  }
   a {
     text-decoration: none;
-    color: black;
+    color: #e61e43 !important;
+    &:hover{
+      color: #000000 !important;
+    }
   }
-  li {
-    cursor: pointer;
+  .logo img{
+    height: 2rem;
+  }
+
+  @media screen and (max-width: 992px) {
+    li{
+      width: 100%;
+      display: flex;
+      justify-content:flex-start;
+    }
+    .navbar-collapse {
+      padding: 20px 0 0 0;
+    }
   }
 }

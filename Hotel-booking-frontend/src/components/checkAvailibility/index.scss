@@ -1,13 +1,11 @@
 .checkAvailibility {
-  background-color: #dbcc95;
-  color: #fff;
+  color: #000000;
   .CA-heading {
     width: 90%;
   }
   .CA-form {
     width: 90%;
     .CAFormElements {
-      background: #cd8d7a;
       .checkinCheckOutWrapper {
         position: relative;
         .calendar-icon {
@@ -29,6 +27,9 @@
       }
     }
   }
+}
+.form-control, .input-group-text, .form-select{
+  border: 1px solid grey !important;
 }
 
 .react-calendar {
