@@ -89,7 +89,7 @@ class HotelBookingController {
 			@RequestParam("checkOut") String booking_end_date,@RequestParam("location")String hotel_city,@RequestParam("roomNo") int total_rooms )
 	{
 		
-		return new ResponseEntity<List<Hotel>>(new ArrayList<>(),HttpStatus.OK);
+		return new ResponseEntity<List<Hotel>>(hotelservice.searchHotels(no_of_pepole, booking_start_date, booking_end_date, hotel_city, total_rooms),HttpStatus.OK);
 	}
 	
 	

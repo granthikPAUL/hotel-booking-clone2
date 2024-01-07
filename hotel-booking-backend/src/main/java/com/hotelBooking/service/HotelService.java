@@ -1,4 +1,7 @@
 package com.hotelBooking.service;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,32 +79,36 @@ public class HotelService implements HotelRepository{
 		// TODO Auto-generated method stub
 		Session session=neo4jDriver.session();
 		Transaction tx=session.beginTransaction();
-//		String query="match(n:Hotel)where id(n)="+id+" return n";
-		String query="MATCH (n:Hotel) where id(n)="+id+" match(m:HotelRoom) match(n)-[r:has_room]->(m) return n,collect(m) as m";
-//		logger.info("---calling rooms----");
-//		List<HotelRoom>listOfRooms=findRoomForHotel(id);
-//		logger.info("list of rooms"+listOfRooms);
+		String query="optional MATCH (n:Hotel) where id(n)="+id+"\r\n"
+				+ "call{\r\n"
+				+ "    with n\r\n"
+				+ "    optional match(n)-[r:has_room]->(m:HotelRoom)\r\n"
+				+ "    return case when r is null then null\r\n"
+				+ "    else m end as rooms\r\n"
+				+ "}\r\n"
+				+ "return n,collect(rooms) as rooms";
 		Result res= tx.run(query);
-//		Record rec=res.list().get(0);
+		logger.info("query string "+query);
 		List<Record>records=res.list();
-		Record hotelRecord=records.get(0);
-		Hotel hotel=mapper.convertValue(hotelRecord.get("n").asMap(),Hotel.class);
-		hotel.setHotel_id(id);
+		Hotel hotel=mapper.convertValue(records.get(0).get("n").asMap(),Hotel.class);
+		hotel.setHotel_id(records.get(0).get("n").asEntity().id());
+
 		logger.info("hotel details "+hotel);
 		
-		int sizeOfRooms=records.get(0).get("m").size();
-		Value roomRecord=records.get(0).get("m");
+		int sizeOfRooms=records.get(0).get("rooms").asList().size();
 		List<HotelRoom>listOfRooms = new ArrayList<>();
 		for(int i=0;i<sizeOfRooms;i++) {
-			
-			logger.info("node value "+roomRecord.get(i).asNode().asMap());
-			Map<String,Object>resultMap=roomRecord.get(i).asNode().asMap();
+			Record record=records.get(0);		
+			logger.info("room  value "+record.get("rooms").get(i).asMap());
+			Map<String,Object>resultMap=record.get("rooms").get(i).asMap();
 			HotelRoom hotel_room=new HotelRoom();
-			hotel_room.setId(roomRecord.get(i).asEntity().id());
+			hotel_room.setId(record.get("rooms").get(i).asEntity().id());
 			hotel_room.setBooking_start_date(resultMap.get("booking_start_date").toString());
 			hotel_room.setBooking_end_date(resultMap.get("booking_end_date").toString());
 			hotel_room.setNo_of_pepole(Integer.parseInt(resultMap.get("no_of_pepole").toString()));
 			hotel_room.setPrice(Double.parseDouble(resultMap.get("price").toString()));
+			
+			logger.info("room details"+hotel_room);
 			listOfRooms.add(hotel_room);
 			
 		}
@@ -192,11 +200,31 @@ public class HotelService implements HotelRepository{
 		return  listOfRooms;
 	}
 	
-//	public List<Hotel> searchHotels(int no_of_pepole,String booking_start_date,String booking_end_date,String hotel_city,int total_rooms ){
-//		logger.info("calling search method"+no_of_pepole+" "+booking_end_date+" "+booking_end_date+" "+hotel_city+" "+total_rooms);
-//		Session session=neo4jDriver.session();
-//		Transaction tx=session.beginTransaction();
-////		String q="match("
-//	}
+	public List<Hotel> searchHotels(int no_of_pepole,String booking_start_date,String booking_end_date,String hotel_city,int total_rooms ){
+		logger.info("calling search method"+no_of_pepole+" "+booking_end_date+" "+booking_end_date+" "+hotel_city+" "+total_rooms);
+		Session session=neo4jDriver.session();
+		Transaction tx=session.beginTransaction();
+		DateTimeFormatter formatter= DateTimeFormatter.ISO_DATE;
+		LocalDateTime startDate=LocalDate.parse(booking_start_date, formatter).atStartOfDay();
+		LocalDateTime endDate=LocalDate.parse(booking_end_date, formatter).atStartOfDay();
+		String query="optional match(n:Hotel) where n.hotel_city='"+hotel_city+"' and n.total_rooms>="+total_rooms+"\r\n"
+				+ "with n optional match(n)-[r:has_room]->(m:HotelRoom)where m.no_of_pepole>="+no_of_pepole+" and m.booking_start_date <> date('"+startDate+"') and m.booking_end_date<> date('"+endDate+"') return distinct(n)";
+	
+		logger.info("query string "+query);
+		Result res=tx.run(query);
+		List<Record>records=res.list();
+		logger.info("records "+records);
+		List<Hotel>listOfHotel=new ArrayList<>();
+		if(records.get(0).get("n")!=null)
+		{
+			for(Record record:records) {
+				Hotel hotel=mapper.convertValue(record.get("n").asMap(),Hotel.class);
+				hotel.setHotel_id(record.get("n").asEntity().id());
+				listOfHotel.add(hotel);
+			}
+		}
+		return listOfHotel;
+	
+	}
 
 }
