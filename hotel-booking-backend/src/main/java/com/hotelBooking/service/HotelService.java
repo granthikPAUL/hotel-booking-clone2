@@ -208,7 +208,7 @@ public class HotelService implements HotelRepository{
 		LocalDateTime startDate=LocalDate.parse(booking_start_date, formatter).atStartOfDay();
 		LocalDateTime endDate=LocalDate.parse(booking_end_date, formatter).atStartOfDay();
 		String query="optional match(n:Hotel) where n.hotel_city='"+hotel_city+"' and n.total_rooms>="+total_rooms+"\r\n"
-				+ "with n optional match(n)-[r:has_room]->(m:HotelRoom)where m.no_of_pepole>="+no_of_pepole+" and m.booking_start_date  date('"+startDate+"') and m.booking_end_date<> date('"+endDate+"') return distinct(n)";
+				+ "with n optional match(n)-[r:has_room]->(m:HotelRoom)where m.no_of_pepole>="+no_of_pepole+" and m.booking_start_date > date('"+endDate+"') and m.booking_end_date < date('"+startDate+"') return distinct(n)";
 	
 		logger.info("query string "+query);
 		Result res=tx.run(query);
