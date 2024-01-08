@@ -55,6 +55,7 @@ const CheckAvailibility = () => {
     }
   };
 
+  
   return (
     <div className="checkAvailibility py-4">
       <section className="CA-heading mx-auto">
