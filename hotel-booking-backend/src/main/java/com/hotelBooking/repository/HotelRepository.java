@@ -15,5 +15,6 @@ public interface HotelRepository {
 	public List<Hotel> findAllHotels();
 	public Hotel findHotelById(Long id);
 	public Hotel saveHotel(Hotel hotel);
-	
+	public  List<Hotel> searchHotels(int no_of_pepole,String booking_start_date,String booking_end_date,String hotel_city,int total_rooms );
+	public String addRoomToHotel(Long roomId,Long hotelId);
 }
