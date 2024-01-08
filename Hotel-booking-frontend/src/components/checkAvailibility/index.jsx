@@ -18,7 +18,7 @@ const CheckAvailibility = () => {
   const getFormattedDate = (originalDateString) => {
     let originalDate = new Date(originalDateString);
     let year = originalDate.getFullYear();
-    let month = (originalDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based, so add 1
+    let month = (originalDate.getMonth() + 1).toString().padStart(2, "0");
     let day = originalDate.getDate().toString().padStart(2, "0");
     let formattedDate = `${year}-${month}-${day}`;
 
@@ -28,15 +28,23 @@ const CheckAvailibility = () => {
   const onSubmitCheck = (e) => {
     e.preventDefault();
 
-    const formData = {
-      location,
-      checkIn: getFormattedDate(date[0]),
-      checkOut: getFormattedDate(date[1]),
-      roomNo,
-      adultNo,
-    };
+    let checkIn = getFormattedDate(date[0]);
+    let checkOut = getFormattedDate(date[1]);
+    filteredHotels(location, checkIn, checkOut, roomNo, adultNo);
+  };
 
-    alert(JSON.stringify(formData));
+  const filteredHotels = async (
+    location,
+    checkIn,
+    checkOut,
+    roomNo,
+    adultNo
+  ) => {
+    const data = await fetch(
+      `http://localhost:8080/search?adultNo=${adultNo}&checkIn=${checkIn}&checkOut=${checkOut}&location=${location}&roomNo=${roomNo}`
+    );
+    const response = await data.json();
+    console.log("response-->", response);
   };
 
   const toggleCalendar = () => {
@@ -55,7 +63,6 @@ const CheckAvailibility = () => {
     }
   };
 
-  
   return (
     <div className="checkAvailibility py-4">
       <section className="CA-heading mx-auto">

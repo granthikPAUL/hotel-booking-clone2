@@ -4,8 +4,7 @@ import HotelCard from "../hotelCard/HotelCard";
 
 const HotelListing = ({ imgData }) => {
   const hotelData = useHotelData();
-  console.log("hotelData-->", hotelData);
-  console.log("imgData-->", imgData);
+
   return (
     <div className="hotel-listing">
       <h3>Get away this weekend</h3>
