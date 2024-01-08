@@ -15,18 +15,27 @@ const CheckAvailibility = () => {
 
   const calendarRef = useRef(null);
 
+  const getFormattedDate = (originalDateString) => {
+    let originalDate = new Date(originalDateString);
+    let year = originalDate.getFullYear();
+    let month = (originalDate.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based, so add 1
+    let day = originalDate.getDate().toString().padStart(2, "0");
+    let formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+  };
+
   const onSubmitCheck = (e) => {
     e.preventDefault();
 
     const formData = {
       location,
-      checkIn: date[0],
-      checkOut: date[1],
+      checkIn: getFormattedDate(date[0]),
+      checkOut: getFormattedDate(date[1]),
       roomNo,
       adultNo,
     };
 
-    console.log("formData-->", formData);
     alert(JSON.stringify(formData));
   };
 
