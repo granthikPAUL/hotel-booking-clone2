@@ -215,7 +215,8 @@ public class HotelService implements HotelRepository{
 		List<Record>records=res.list();
 		logger.info("records "+records);
 		List<Hotel>listOfHotel=new ArrayList<>();
-		if(records.get(0).get("n")!=null)
+		logger.info("record print "+records.get(0).get("n").isNull());
+		if(!records.get(0).get("n").isNull())
 		{
 			for(Record record:records) {
 				Hotel hotel=mapper.convertValue(record.get("n").asMap(),Hotel.class);
