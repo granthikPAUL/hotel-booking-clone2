@@ -1,7 +1,9 @@
 .HotelCard {
   cursor: pointer;
+  border-radius: 15px !important;
   img {
     height: 40%;
+    border-radius: 15px 15px 0px 0px;
   }
   .card-body {
     p {
@@ -12,9 +14,9 @@
     flex-direction: column;
     justify-content: space-between;
     .discount {
-      background-color: #e61e43;
+      background-color: #392467;
       width: fit-content;
-      border-radius: 10px;
+      border-radius: 15px;
       padding: 5px 10px;
       color: #ffffff;
     }

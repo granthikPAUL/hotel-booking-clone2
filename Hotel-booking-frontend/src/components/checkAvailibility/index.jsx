@@ -16,6 +16,9 @@ const CheckAvailibility = () => {
   const calendarRef = useRef(null);
 
   const getFormattedDate = (originalDateString) => {
+    if (originalDateString === "") {
+      return "";
+    }
     let originalDate = new Date(originalDateString);
     let year = originalDate.getFullYear();
     let month = (originalDate.getMonth() + 1).toString().padStart(2, "0");
@@ -28,8 +31,8 @@ const CheckAvailibility = () => {
   const onSubmitCheck = (e) => {
     e.preventDefault();
 
-    let checkIn = getFormattedDate(date[0]);
-    let checkOut = getFormattedDate(date[1]);
+    let checkIn = getFormattedDate(date[0] || "");
+    let checkOut = getFormattedDate(date[1] || "");
     filteredHotels(location, checkIn, checkOut, roomNo, adultNo);
   };
 
@@ -45,6 +48,11 @@ const CheckAvailibility = () => {
     );
     const response = await data.json();
     console.log("response-->", response);
+
+    setLocation("");
+    setDate("");
+    setRoomNo(1);
+    setAdultNo(1);
   };
 
   const toggleCalendar = () => {
@@ -168,7 +176,7 @@ const CheckAvailibility = () => {
           {/* Search Btn */}
           <div className="col-12 col-lg-1 searchBtn d-flex align-items-center justify-content-center px-2 pt-4 pt-md-0">
             <button
-              className="book-a-room btn btn-primary"
+              className="book-a-room btn"
               type="submit"
               id="book-a-room"
               title="Search"

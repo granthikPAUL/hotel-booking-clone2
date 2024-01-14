@@ -21,14 +21,25 @@
         }
       }
       .checkAvailibilityDetails {
-        select {
+        .form-select {
           width: 100%;
+        }
+      }
+      .searchBtn {
+        .book-a-room {
+          background-color: #392467;
+          color: #ffffff;
+          &:hover {
+            background-color: #5d3587;
+          }
         }
       }
     }
   }
 }
-.form-control, .input-group-text, .form-select{
+.form-control,
+.input-group-text,
+.form-select {
   border: 1px solid grey !important;
 }
 
@@ -42,7 +53,7 @@
   line-height: 1.125em;
 }
 .react-calendar__navigation button {
-  color: #6f48eb;
+  color: #5D3587;
   min-width: 44px;
   background: none;
   font-size: 16px;
@@ -62,35 +73,31 @@ abbr[title] {
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
   background: #f8f8fa !important;
-  color: #6f48eb !important;
+  color: #5D3587 !important;
   border-radius: 6px;
 }
 .react-calendar__tile--now {
   border-radius: 6px;
   font-weight: bold;
-  // background: #6f48eb;
-  // color: white;
 }
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
-  // background: #6f48eb33;
   border-radius: 6px;
   font-weight: bold;
-  // color: #6f48eb;
 }
 .react-calendar__tile--hasActive:enabled:hover,
 .react-calendar__tile--hasActive:enabled:focus {
   background: #f8f8fa;
 }
 .react-calendar__tile--active {
-  background: #6f48eb !important;
+  background: #5D3587 !important;
   border-radius: 6px;
   font-weight: bold;
   color: white;
 }
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-  background: #6f48eb !important;
+  background: #5D3587 !important;
   color: white !important;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
@@ -98,7 +105,7 @@ abbr[title] {
 }
 .react-calendar__tile--range {
   background: #f8f8fa;
-  color: #6f48eb;
+  color: #5D3587;
   border-radius: 0;
 }
 .react-calendar__tile--rangeStart {
@@ -106,7 +113,7 @@ abbr[title] {
   border-bottom-right-radius: 0;
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
-  background: #6f48eb;
+  background: #5D3587;
   color: white;
 }
 .react-calendar__tile--rangeEnd {
@@ -114,6 +121,6 @@ abbr[title] {
   border-bottom-left-radius: 0;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
-  background: #6f48eb;
+  background: #5D3587;
   color: white;
 }

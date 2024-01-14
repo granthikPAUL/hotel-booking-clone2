@@ -43,7 +43,7 @@ const SearchCity = () => {
       <h3>Explore stays in trending destinations</h3>
       <Slider {...settings}>
         {trendingDestination.map((item, index) => (
-          <div className="card">
+          <div className="card" key={index}>
             <img src={item.image} className="card-img-top" alt={item.city} />
             <div className="card-body">
               <h5 className="card-title">{item.city}</h5>

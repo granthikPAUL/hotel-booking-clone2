@@ -15,3 +15,6 @@ http://localhost:7474/
 sprigboot server local 
 http://localhost:8080/
 
+color palette 
+#392467 -> #5D3587 -> #A367B1 -> #FFD1E3
+

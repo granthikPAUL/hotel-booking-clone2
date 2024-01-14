@@ -4,15 +4,18 @@ import HotelCard from "../hotelCard/HotelCard";
 
 const HotelListing = ({ imgData }) => {
   const hotelData = useHotelData();
-
   return (
     <div className="hotel-listing">
       <h3>Get away this weekend</h3>
-      <div className="hotel-cards">
-        {hotelData.map((hotel, index) => {
-          return <HotelCard img={imgData[index]} data={hotel} key={index} />;
-        })}
-      </div>
+      {hotelData.length === 0 ? (
+        <div>Loading hotels...</div>
+      ) : (
+        <div className="hotel-cards">
+          {hotelData.map((hotel, index) => {
+            return <HotelCard img={imgData[index]} data={hotel} key={index} />;
+          })}
+        </div>
+      )}
     </div>
   );
 };
