@@ -202,11 +202,21 @@ public class HotelService implements HotelRepository{
 	
 	public List<Hotel> searchHotels(int no_of_pepole,String booking_start_date,String booking_end_date,String hotel_city,int total_rooms ){
 		logger.info("calling search method"+no_of_pepole+" "+booking_end_date+" "+booking_end_date+" "+hotel_city+" "+total_rooms);
+		logger.info("start date  and endDate "+booking_end_date.length()+" "+booking_start_date.length());
 		Session session=neo4jDriver.session();
 		Transaction tx=session.beginTransaction();
 		DateTimeFormatter formatter= DateTimeFormatter.ISO_DATE;
-		LocalDateTime startDate=LocalDate.parse(booking_start_date, formatter).atStartOfDay();
-		LocalDateTime endDate=LocalDate.parse(booking_end_date, formatter).atStartOfDay();
+		LocalDateTime startDate,endDate;
+		if(booking_start_date.length()==0 && booking_end_date.length()==0)
+		{
+			booking_start_date=LocalDate.now().toString();
+			booking_end_date=LocalDate.now().plusDays(1).toString();
+			logger.info("no date given "+booking_start_date+' '+booking_end_date);
+			
+		}
+		
+		endDate=LocalDate.parse(booking_end_date, formatter).atStartOfDay();
+		startDate=LocalDate.parse(booking_start_date, formatter).atStartOfDay();
 		String query="optional match(n:Hotel) where n.hotel_city='"+hotel_city+"' and n.total_rooms>="+total_rooms+"\r\n"
 				+ "with n optional match(n)-[r:has_room]->(m:HotelRoom)where m.no_of_pepole>="+no_of_pepole+" and m.booking_start_date > date('"+endDate+"') and m.booking_end_date < date('"+startDate+"') return distinct(n)";
 	

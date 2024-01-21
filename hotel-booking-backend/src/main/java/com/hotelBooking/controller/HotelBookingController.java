@@ -1,9 +1,12 @@
 package com.hotelBooking.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import org.neo4j.driver.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -85,8 +88,11 @@ class HotelBookingController {
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<Hotel>> searchHotels(@RequestParam("adultNo") int no_of_pepole,@RequestParam("checkIn") String booking_start_date,
-			@RequestParam("checkOut") String booking_end_date,@RequestParam("location")String hotel_city,@RequestParam("roomNo") int total_rooms )
+	public ResponseEntity<List<Hotel>> searchHotels(@RequestParam(value = "adultNo",defaultValue ="1") int no_of_pepole,
+			@RequestParam(value="checkIn",defaultValue ="") String booking_start_date,
+			@RequestParam(value="checkOut",defaultValue="") String booking_end_date,
+			@RequestParam(value="location",defaultValue = "kolkata")String hotel_city,
+			@RequestParam(value="roomNo",defaultValue = "1") int total_rooms )
 	{
 		
 		return new ResponseEntity<List<Hotel>>(hotelservice.searchHotels(no_of_pepole, booking_start_date, booking_end_date, hotel_city, total_rooms),HttpStatus.OK);
