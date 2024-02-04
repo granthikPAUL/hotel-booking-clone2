@@ -1,15 +1,20 @@
 package com.hotelBooking.controller;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
-import org.neo4j.driver.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,17 +23,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hotelBooking.config.*;
 import com.hotelBooking.entity.Hotel;
 import com.hotelBooking.entity.HotelRoom;
+import com.hotelBooking.entity.TransactionDetails;
 import com.hotelBooking.entity.User;
-import com.hotelBooking.repository.HotelRepository;
-import com.hotelBooking.repository.HotelRoomRepository;
 import com.hotelBooking.repository.UserRepository;
 import com.hotelBooking.service.HotelRoomService;
 import com.hotelBooking.service.HotelService;
+import com.hotelBooking.service.TransactionDetailsService;
+import com.hotelBooking.service.UserDetailsServiceImpl;
+import com.hotelBooking.util.AuthenticationObject;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 class HotelBookingController {
+	Logger logger=LoggerFactory.getLogger(HotelBookingController.class);
+
 
 	@Autowired
 	private UserRepository userepo;
@@ -37,15 +49,30 @@ class HotelBookingController {
 	@Autowired
 	private HotelRoomService roomService;
 	
-	@GetMapping("/saveUser")
-	public User getHome() {
-		User user=new User();
-		user.setEmailId("xyz@gmai.com");
-		user.setFirstName("abcd");
-		user.setLastName("paul");
-		user.setPassword("dfsdfsdf");
-		userepo.save(user);
-		return user;
+	@Autowired
+	private TransactionDetailsService paymentService;
+	
+	@Autowired
+	private UserDetailsServiceImpl userDetailsServiceImpl;
+	
+	@Autowired
+	private JwtService jwtService;
+
+	@Autowired
+	private UserDetailsServiceImpl userService;
+	@Autowired
+	private CustomeAuthManager authmanager;
+
+	
+	@PostMapping("/saveUser")
+	public ResponseEntity<User> getHome(@RequestBody User user) {
+		/*
+		 * User user=new User(); user.setEmailId("xyz@gmai.com");
+		 * user.setFirstName("abcd"); user.setLastName("paul");
+		 * user.setPassword("dfsdfsdf"); userepo.save(user); return user;
+		 */
+		
+		return new ResponseEntity<User>(userService.saveUser(user),HttpStatus.OK);
 	}
 	
 
@@ -97,6 +124,22 @@ class HotelBookingController {
 		
 		return new ResponseEntity<List<Hotel>>(hotelservice.searchHotels(no_of_pepole, booking_start_date, booking_end_date, hotel_city, total_rooms),HttpStatus.OK);
 	}
+	@GetMapping("/createTransaction/{amount}")
+	public ResponseEntity<TransactionDetails> paymentController(@PathVariable(name = "amount") Double amnt){
+		
+		return new ResponseEntity<TransactionDetails>(paymentService.createTransaction(amnt),HttpStatus.OK);
+	}
 	
-	
+	@GetMapping("/user/authenticate")
+	public String homepage2(HttpServletResponse response) {
+		Authentication obj=SecurityContextHolder.getContext().getAuthentication();
+		UserDetails user=userDetailsServiceImpl.loadUserByUsername(obj.getName());
+		logger.info("after token "+obj.getName());
+		logger.info("user details for token "+user);
+		String token=jwtService.generateToken(user);
+		response.setHeader("jwt",token);
+		System.out.println(response.getHeaderNames());
+		System.out.println(token);
+		return "put is working fine";
+	}
 }
