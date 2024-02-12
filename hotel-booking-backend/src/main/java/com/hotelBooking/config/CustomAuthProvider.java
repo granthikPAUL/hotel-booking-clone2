@@ -39,7 +39,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
 			logger.info("authentication failed no user found");
 			throw new AuthenticationException("user not found") {};
 		}
-		if (!passwordEncoder.matches(password_entered,"$2a$10$B9XeBmJt4Mv73qo.sk/2cu6d0D5K4UQ51WTgT1UKE.g12Nl/JY8kS")) {
+		if (!passwordEncoder.matches(password_entered,userDetails.getPassword())) {
 			logger.info("authentication failed");
             throw new AuthenticationException("Invalid credentials") {};
         }
