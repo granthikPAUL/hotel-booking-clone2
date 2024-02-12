@@ -46,6 +46,7 @@ public class WebSecurityConfig {
 			}
 		})
 		.authorizeHttpRequests()
+		.requestMatchers("/saveUser").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.sessionManagement()
