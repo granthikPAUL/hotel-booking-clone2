@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Routes,
   Route,
   createBrowserRouter,
@@ -33,22 +33,25 @@ export const hotelRouter = createBrowserRouter([
     element: <HotelRoutes />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <Homepage />,
       },
-      {
-        path: "/register",
-        element: <Register />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/checkout",
-        element: <Checkout />,
-      },
     ],
+    errorElement: <Error />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/checkout",
+    element: <Checkout />,
     errorElement: <Error />,
   },
 ]);
