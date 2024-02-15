@@ -1,4 +1,4 @@
-.login {
+.signup {
   .image-section {
     display: grid;
     place-items: center;
@@ -26,7 +26,7 @@
         height: 40px;
       }
     }
-    .login-form {
+    .registration-form {
       width: 80%;
       border: 1px solid #5d3587;
       border-radius: 10px;
@@ -42,7 +42,7 @@
           box-shadow: none;
         }
       }
-      .login-btn {
+      .registration-btn {
         background-color: #5d3587;
         color: white;
         width: 100%;
@@ -57,7 +57,7 @@
       display: none;
     }
     .form-section {
-      .login-form {
+      .registration-form {
         width: 80%;
       }
     }
@@ -68,7 +68,7 @@
       display: none;
     }
     .form-section {
-      .login-form {
+      .registration-form {
         width: 95%;
       }
     }

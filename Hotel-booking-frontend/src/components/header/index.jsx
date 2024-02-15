@@ -2,6 +2,8 @@ import React from "react";
 import "./index.scss";
 import { FaPhoneAlt } from "react-icons/fa";
 import { TbWorld } from "react-icons/tb";
+import { CgProfile } from "react-icons/cg";
+import { BiSupport } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo/logo.png";
 const index = () => {
@@ -41,13 +43,16 @@ const index = () => {
             </div>
           </li>
           <li className="nav-item support me-auto">
-            <div className="d-flex align-items-center gap-2">Support</div>
+            <div className="d-flex align-items-center gap-2">
+              <BiSupport />
+              Support
+            </div>
           </li>
           <li>
-            <Link to="/register">Regiser</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
+            <Link to="/signup" className="d-flex align-items-center gap-2">
+              <CgProfile />
+              Login / Signup
+            </Link>
           </li>
         </ul>
       </div>

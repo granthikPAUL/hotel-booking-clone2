@@ -11,7 +11,7 @@ import Header from "../components/header";
 import CheckAvailibility from "../components/checkAvailibility";
 import Footer from "../components/footer";
 import Homepage from "../pages/homepage";
-import Register from "../pages/register";
+import Signup from "../pages/signup";
 import Login from "../pages/login";
 import Checkout from "../pages/checkout";
 import Error from "../components/Error/Error";
@@ -45,8 +45,8 @@ export const hotelRouter = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: "/register",
-    element: <Register />,
+    path: "/signup",
+    element: <Signup />,
     errorElement: <Error />,
   },
   {

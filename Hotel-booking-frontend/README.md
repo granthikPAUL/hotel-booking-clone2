@@ -16,5 +16,6 @@ sprigboot server local
 http://localhost:8080/
 
 color palette 
-#392467 -> #5D3587 -> #A367B1 -> #FFD1E3
+dark purple -> #392467
+light purple -> #5d3587
 
