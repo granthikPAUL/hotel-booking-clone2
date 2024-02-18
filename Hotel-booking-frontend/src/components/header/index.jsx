@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.scss";
 import { FaPhoneAlt } from "react-icons/fa";
 import { TbWorld } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 import { BiSupport } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { IoPersonCircle } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { loginState } from "../../redux/reducers";
+
 const index = () => {
+  const [profileExpand, setprofileExpand] = useState(false);
+  const loginRef = useRef(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const globalState = useSelector((state) => state.globalState);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (loginRef.current && !loginRef.current.contains(e.target)) {
+        setprofileExpand(false);
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [loginRef]);
+
+  const handleLogout = () => {
+    dispatch(loginState(false));
+    navigate("/");
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow px-1 px-lg-5">
       <section className="navbar-flex navbar-brand logo d-flex justify-content-center align-items-center">
@@ -48,12 +75,48 @@ const index = () => {
               Support
             </div>
           </li>
-          <li>
-            <Link to="/signup" className="d-flex align-items-center gap-2">
-              <CgProfile />
-              Login / Signup
-            </Link>
-          </li>
+          {globalState.login ? (
+            <li className="login" ref={loginRef}>
+              <Link
+                className="d-flex align-items-center gap-2"
+                onClick={() => setprofileExpand(true)}
+              >
+                <IoPersonCircle size={20} />
+                Welcome, Priyam
+              </Link>
+              {profileExpand && (
+                <section className="profile-dropdown">
+                  <ul className="list-group">
+                    <li
+                      className="list-group-item list-group-item-action"
+                      onClick={() => navigate("/profile")}
+                    >
+                      My Profile
+                    </li>
+                    <li className="list-group-item list-group-item-action">
+                      Help
+                    </li>
+                    <li className="list-group-item list-group-item-action">
+                      About Us
+                    </li>
+                    <li
+                      className="list-group-item list-group-item-action"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </li>
+                  </ul>
+                </section>
+              )}
+            </li>
+          ) : (
+            <li>
+              <Link to="/login" className="d-flex align-items-center gap-2">
+                <CgProfile size={17} />
+                Login / Signup
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

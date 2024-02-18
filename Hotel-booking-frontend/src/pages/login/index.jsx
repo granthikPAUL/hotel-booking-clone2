@@ -5,10 +5,17 @@ import Logo from "../../assets/logo/logo.png";
 import { Link } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { loginState } from "../../redux/reducers";
+import { useNavigate } from "react-router-dom";
 
 const index = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(loginState(true));
+    navigate("/");
   };
   return (
     <div className="login vh-100 vw-100 d-flex row p-0 m-0">

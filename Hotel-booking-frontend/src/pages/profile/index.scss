@@ -1,0 +1,33 @@
+.profile {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  .booking-history {
+    grid-column: 1 / span 2;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  }
+  .edit-profile {
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    .editProfile-btn {
+      cursor: pointer;
+    }
+  }
+  .change-password {
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    .editPassword-btn {
+      cursor: pointer;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    grid-template-columns: unset;
+    grid-template-rows: unset;
+    .booking-history {
+      grid-column: unset;
+    }
+  }
+}

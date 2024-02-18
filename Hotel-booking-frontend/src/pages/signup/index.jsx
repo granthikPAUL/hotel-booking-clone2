@@ -2,11 +2,13 @@ import React from "react";
 import "./index.scss";
 import registrationImg from "../../assets/registration-login/registration.svg";
 import Logo from "../../assets/logo/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const index = () => {
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
+    navigate("/login");
   };
   return (
     <div className="signup vh-100 vw-100 d-flex row p-0 m-0">

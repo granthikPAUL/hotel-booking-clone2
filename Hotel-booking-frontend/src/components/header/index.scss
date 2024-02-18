@@ -27,6 +27,19 @@
   .logo img {
     height: 2rem;
   }
+  .login {
+    position: relative;
+    .profile-dropdown {
+      position: absolute;
+      top: 40px;
+      width: 100%;
+      background-color: #fff;
+      ul li{
+        width: 100%;
+        border-radius: 0px !important;
+      }
+    }
+  }
 
   @media screen and (max-width: 992px) {
     li {

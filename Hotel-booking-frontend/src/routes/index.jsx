@@ -13,24 +13,31 @@ import Footer from "../components/footer";
 import Homepage from "../pages/homepage";
 import Signup from "../pages/signup";
 import Login from "../pages/login";
+import Profile from "../pages/profile";
 import Checkout from "../pages/checkout";
 import Error from "../components/Error/Error";
 
-const HotelRoutes = () => {
-  return (
-    <>
-      <Header />
-      <CheckAvailibility />
-      <Outlet />
-      <Footer />
-    </>
-  );
-};
+const HomepageRoute = () => (
+  <>
+    <Header />
+    <CheckAvailibility />
+    <Outlet />
+    <Footer />
+  </>
+);
+
+const ProfileRoute = () => (
+  <>
+    <Header />
+    <Outlet />
+    <Footer />
+  </>
+);
 
 export const hotelRouter = createBrowserRouter([
   {
     path: "/",
-    element: <HotelRoutes />,
+    element: <HomepageRoute />,
     children: [
       {
         path: "",
@@ -47,6 +54,17 @@ export const hotelRouter = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/profile",
+    element: <ProfileRoute />,
+    children: [
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+    ],
     errorElement: <Error />,
   },
   {
