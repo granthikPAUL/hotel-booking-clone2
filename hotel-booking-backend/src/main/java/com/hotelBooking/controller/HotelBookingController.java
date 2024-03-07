@@ -138,7 +138,7 @@ class HotelBookingController {
 		logger.info("after token "+obj.getName());
 		logger.info("user details for token "+user);
 		String token=jwtService.generateToken(user);
-		response.setHeader("jwt",token);
+		response.setHeader("Authorization","Bearer "+token);
 		System.out.println(response.getHeaderNames());
 		System.out.println(token);
 		return "put is working fine";
