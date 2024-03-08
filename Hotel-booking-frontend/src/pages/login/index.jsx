@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./index.scss";
 import loginImg from "../../assets/registration-login/login.svg";
 import Logo from "../../assets/logo/logo.png";
@@ -9,16 +9,28 @@ import { useDispatch } from "react-redux";
 import { loginState } from "../../redux/reducers";
 import { useNavigate } from "react-router-dom";
 
+// api
+import { LoginApi } from "../../api";
+// api
+
 const index = () => {
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginState(true));
-    navigate("/");
+    LoginApi(userData);
+    // dispatch(loginState(true));
+    // navigate("/");
+  };
+  const handleChange = (e) => {
+    setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   return (
-    <div className="login vh-100 vw-100 d-flex row p-0 m-0">
+    <div className="login vh-100 vw-100 d-flex row p-0 m-0 mx-auto">
       <aside className="image-section col-12 col-lg-6">
         <img src={loginImg} alt="loginImg" />
       </aside>
@@ -37,6 +49,8 @@ const index = () => {
               type="email"
               class="form-control"
               placeholder="Enter your email id"
+              name="email"
+              onChange={handleChange}
             />
           </div>
 
@@ -48,6 +62,8 @@ const index = () => {
               type="password"
               class="form-control"
               placeholder="Enter your password"
+              name="password"
+              onChange={handleChange}
             />
           </div>
 

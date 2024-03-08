@@ -72,7 +72,7 @@ const CheckAvailibility = () => {
   };
 
   return (
-    <div className="checkAvailibility py-4">
+    <div className="checkAvailibility py-4 container">
       <section className="CA-heading mx-auto">
         <h1 className="p-0 m-0">Where to?</h1>
       </section>

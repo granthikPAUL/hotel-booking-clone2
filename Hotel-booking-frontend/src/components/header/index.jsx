@@ -35,91 +35,93 @@ const index = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow px-1 px-lg-5">
-      <section className="navbar-flex navbar-brand logo d-flex justify-content-center align-items-center">
-        <Link
-          to="/"
-          className="d-flex align-items-center justify-content-center"
+    <div className="header bg-light shadow">
+      <nav className="navbar navbar-expand-lg navbar-light px-1 px-lg-5 container">
+        <section className="navbar-flex navbar-brand logo d-flex justify-content-center align-items-center">
+          <Link
+            to="/"
+            className="d-flex align-items-center justify-content-center"
+          >
+            <h4 className="m-0 logo-text">SnapStay</h4>
+            <img src={Logo} alt="Hotel.com logo" />
+          </Link>
+        </section>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
-          <h4 className="m-0 logo-text">SnapStay</h4>
-          <img src={Logo} alt="Hotel.com logo" />
-        </Link>
-      </section>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav mr-auto d-flex gap-4 align-items-center ms-auto">
-          <li className="nav-item contact me-auto">
-            <div className="d-flex align-items-center gap-2">
-              <FaPhoneAlt /> 0124-6201611
-            </div>
-          </li>
-          <li className="nav-item language me-auto">
-            <div className="d-flex align-items-center gap-2">
-              <TbWorld /> English
-            </div>
-          </li>
-          <li className="nav-item support me-auto">
-            <div className="d-flex align-items-center gap-2">
-              <BiSupport />
-              Support
-            </div>
-          </li>
-          {globalState.login ? (
-            <li className="login" ref={loginRef}>
-              <Link
-                className="d-flex align-items-center gap-2"
-                onClick={() => setprofileExpand(true)}
-              >
-                <IoPersonCircle size={20} />
-                Welcome, Priyam
-              </Link>
-              {profileExpand && (
-                <section className="profile-dropdown">
-                  <ul className="list-group">
-                    <li
-                      className="list-group-item list-group-item-action"
-                      onClick={() => navigate("/profile")}
-                    >
-                      My Profile
-                    </li>
-                    <li className="list-group-item list-group-item-action">
-                      Help
-                    </li>
-                    <li className="list-group-item list-group-item-action">
-                      About Us
-                    </li>
-                    <li
-                      className="list-group-item list-group-item-action"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </li>
-                  </ul>
-                </section>
-              )}
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav mr-auto d-flex gap-4 align-items-center ms-auto">
+            <li className="nav-item contact me-auto">
+              <div className="d-flex align-items-center gap-2">
+                <FaPhoneAlt /> 0124-6201611
+              </div>
             </li>
-          ) : (
-            <li>
-              <Link to="/login" className="d-flex align-items-center gap-2">
-                <CgProfile size={17} />
-                Login / Signup
-              </Link>
+            <li className="nav-item language me-auto">
+              <div className="d-flex align-items-center gap-2">
+                <TbWorld /> English
+              </div>
             </li>
-          )}
-        </ul>
-      </div>
-    </nav>
+            <li className="nav-item support me-auto">
+              <div className="d-flex align-items-center gap-2">
+                <BiSupport />
+                Support
+              </div>
+            </li>
+            {globalState.login ? (
+              <li className="login" ref={loginRef}>
+                <Link
+                  className="d-flex align-items-center gap-2"
+                  onClick={() => setprofileExpand(true)}
+                >
+                  <IoPersonCircle size={20} />
+                  Welcome, Priyam
+                </Link>
+                {profileExpand && (
+                  <section className="profile-dropdown">
+                    <ul className="list-group">
+                      <li
+                        className="list-group-item list-group-item-action"
+                        onClick={() => navigate("/profile")}
+                      >
+                        My Profile
+                      </li>
+                      <li className="list-group-item list-group-item-action">
+                        Help
+                      </li>
+                      <li className="list-group-item list-group-item-action">
+                        About Us
+                      </li>
+                      <li
+                        className="list-group-item list-group-item-action"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </li>
+                    </ul>
+                  </section>
+                )}
+              </li>
+            ) : (
+              <li>
+                <Link to="/login" className="d-flex align-items-center gap-2">
+                  <CgProfile size={17} />
+                  Login / Signup
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
+      </nav>
+    </div>
   );
 };
 

@@ -8,7 +8,7 @@ import HotelListing from "../../components/hotelListing/HotelListing";
 
 const index = () => {
   return (
-    <div className="home">
+    <div className="home container">
       <section>
         <Banner />
       </section>

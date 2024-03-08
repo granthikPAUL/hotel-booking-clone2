@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const index = () => {
   return (
-    <div className="footer my-5">
+    <div className="footer my-5 container">
       <div className="footer-category-wrapper">
         {footerData.map((each, index) => (
           <section className="footer-category" key={index}>
